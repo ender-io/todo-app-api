@@ -28,7 +28,6 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        return response()->json(['task' => $request]);
         $request->validated();
 
         // Create resource
@@ -55,17 +54,20 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
+        $request->validated();
+
         // Update resource
         $resource = Task::find($task->id);
-        $resource = $resource->update($request->all());
+        if($resource) $resource->update($request->all());
 
         // Success message
         if($resource) return response()->json([
             'message' => 'Task updated succesfully',
+            'resource' => $resource,
         ], 201);
 
         // Error message
-        return response()->json([
+        if(!$resource) return response()->json([
             'message' => 'Error to create post',
         ], 500);
     }
