@@ -28,23 +28,22 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
+        return response()->json(['task' => $request]);
         $request->validated();
 
-        $task = new Task();
-        $task->name = $request->name;
-        $task->description = $request->description;
-        $task->status_id = $request->status_id;
-        $task->category_id = $request->category_id;
-        $task->user_id = $request->user_id;
-        $task->icon = $request->icon;
-        $task->color = $request->color;
-        $task->expires_at = $request->expires_at;
+        // Create resource
+        $task = Task::create($request->all());
 
-        $res = $task->save();
-
-        if ($res) return response()->json(['message' => 'Task create succesfully'], 201);
-
-        return response()->json(['message' => 'Error to create post'], 500);
+        // Success message
+        if($task) return response()->json([
+            'message' => 'Task created succesfully', 
+            'task' => $task
+        ], 201);
+        
+        // Error message
+        return response()->json([
+            'message' => 'Error to create post'
+        ], 500);
     }
 
     /**
@@ -56,7 +55,19 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        // $request->validated();
+        // Update resource
+        $resource = Task::find($task->id);
+        $resource = $resource->update($request->all());
+
+        // Success message
+        if($resource) return response()->json([
+            'message' => 'Task updated succesfully',
+        ], 201);
+
+        // Error message
+        return response()->json([
+            'message' => 'Error to create post',
+        ], 500);
     }
 
     /**
@@ -67,6 +78,18 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        // Delete resource
+        $resource = Task::find($task->id);
+        $resource->delete();
+
+        // Success message
+        if($resource) return response()->json([
+            'message' => 'Task deleted succesfully',
+        ], 201);
+        
+        // Error message
+        return response()->json([
+            'message' => 'Error to delete task',
+        ], 500);
     }
 }
