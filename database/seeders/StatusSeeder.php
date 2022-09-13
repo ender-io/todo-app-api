@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class TaskSeeder extends Seeder
+class StatusSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -13,6 +13,6 @@ class TaskSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\Task::factory(10)->create();
+        \App\Models\Status::factory(1)->create();
     }
 }
