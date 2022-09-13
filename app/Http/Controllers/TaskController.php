@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 
@@ -15,17 +17,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Task::all();
     }
 
     /**
@@ -36,29 +28,23 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request)
     {
-        //
-    }
+        $request->validated();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task)
-    {
-        //
-    }
+        $task = new Task();
+        $task->name = $request->name;
+        $task->description = $request->description;
+        $task->status_id = $request->status_id;
+        $task->category_id = $request->category_id;
+        $task->user_id = $request->user_id;
+        $task->icon = $request->icon;
+        $task->color = $request->color;
+        $task->expires_at = $request->expires_at;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
-    {
-        //
+        $res = $task->save();
+
+        if ($res) return response()->json(['message' => 'Task create succesfully'], 201);
+
+        return response()->json(['message' => 'Error to create post'], 500);
     }
 
     /**
@@ -70,7 +56,7 @@ class TaskController extends Controller
      */
     public function update(UpdateTaskRequest $request, Task $task)
     {
-        //
+        // $request->validated();
     }
 
     /**

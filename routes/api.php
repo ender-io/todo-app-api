@@ -20,4 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResources([
     'task' => \App\Http\Controllers\TaskController::class,
+    'status' => \App\Http\Controllers\StatusController::class,
+    'category' => \App\Http\Controllers\CategoryController::class,
 ]);
