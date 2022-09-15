@@ -56,8 +56,7 @@ class TaskController extends Controller
         $request->validated();
 
         // Update resource
-        $resource = Task::find($task->id);
-        if($resource) $resource->update($request->all());
+        $resource = $task->update($request->all());
 
         // Success message
         if($resource) return response()->json([
@@ -66,8 +65,8 @@ class TaskController extends Controller
         ], 201);
 
         // Error message
-        if(!$resource) return response()->json([
-            'message' => 'Error to create post',
+        return response()->json([
+            'message' => 'Error to update post',
         ], 500);
     }
 
@@ -80,8 +79,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         // Delete resource
-        $resource = Task::find($task->id);
-        $resource->delete();
+        $resource = $task->delete();
 
         // Success message
         if($resource) return response()->json([
